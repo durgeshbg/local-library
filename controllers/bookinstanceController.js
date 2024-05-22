@@ -1,8 +1,10 @@
-const BookInstance = require("../models/bookinstance");
-const asyncHandler = require("express-async-handler");
+const BookInstance = require('../models/bookinstance');
+const asyncHandler = require('express-async-handler');
 
 exports.bookinstance_list = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: BookInstance list");
+  const book_instances = await BookInstance.find().populate('book').exec();
+
+  res.render('book_instances', { title: 'Book Instances List', book_instances });
 });
 
 exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
@@ -10,25 +12,25 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: BookInstance create GET");
+  res.send('NOT IMPLEMENTED: BookInstance create GET');
 });
 
 exports.bookinstance_create_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: BookInstance create POST");
+  res.send('NOT IMPLEMENTED: BookInstance create POST');
 });
 
 exports.bookinstance_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: BookInstance delete GET");
+  res.send('NOT IMPLEMENTED: BookInstance delete GET');
 });
 
 exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: BookInstance delete POST");
+  res.send('NOT IMPLEMENTED: BookInstance delete POST');
 });
 
 exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: BookInstance update GET");
+  res.send('NOT IMPLEMENTED: BookInstance update GET');
 });
 
 exports.bookinstance_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: BookInstance update POST");
+  res.send('NOT IMPLEMENTED: BookInstance update POST');
 });
