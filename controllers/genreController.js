@@ -19,7 +19,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  res.render('genre', { genre, booksInGenre });
+  res.render('genre', { title: 'Genre Detail', genre, booksInGenre });
 });
 
 exports.genre_create_get = asyncHandler(async (req, res, next) => {
