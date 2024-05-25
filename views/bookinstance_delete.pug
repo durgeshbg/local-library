@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1 #{title}: #{bookinstance.imprint}
+    p= bookinstance.status
+
+    
+    p Do you really want to delete this Author?
+
+    form(method="POST") 
+        .form-group
+            input#bookinstance_id.form-control(type='hidden', name='bookinstance_id', value=bookinstance._id )
+        button.btn.btn-primary(type='submit') Delete
