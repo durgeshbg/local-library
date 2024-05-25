@@ -80,9 +80,50 @@ exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: BookInstance update GET');
+  const [bookinstance, books] = await Promise.all([
+    BookInstance.findById(req.params.id).exec(),
+    Book.find({}, 'title summary').exec(),
+  ]);
+  res.render('bookinstance_form', {
+    title: 'Update BookInstance',
+    bookinstance,
+    books,
+    selected_book: bookinstance.book,
+  });
 });
 
-exports.bookinstance_update_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: BookInstance update POST');
-});
+exports.bookinstance_update_post = [
+  body('book', 'Book must be specified').trim().isLength({ min: 1 }).escape(),
+  body('imprint', 'Imprint must be specified').trim().isLength({ min: 1 }).escape(),
+  body('status').escape(),
+  body('due_back', 'Invalid date').optional({ values: 'falsy' }).isISO8601().toDate(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const bookinstance = new BookInstance({
+      book: req.body.book,
+      imprint: req.body.imprint,
+      status: req.body.status,
+      due_back: req.body.due_back,
+      _id: req.params.id,
+    });
+    if (!errors.isEmpty()) {
+      const books = await Book.find({}, 'title').sort({ title: 1 }).exec();
+      res.render('bookinstance_form', {
+        title: 'Update BookInstance',
+        books,
+        bookinstance,
+        selected_book: bookinstance.book,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const updatedBookInstance = await BookInstance.findByIdAndUpdate(
+        req.params.id,
+        bookinstance,
+        {}
+      );
+      res.redirect(updatedBookInstance.url);
+    }
+  }),
+];
