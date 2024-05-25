@@ -155,6 +155,7 @@ exports.author_update_post = [
       res.render('author_form', {
         title: 'Update Author',
         author,
+        errors: errors.array(),
       });
     } else {
       const updatedAuthor = await Author.findByIdAndUpdate(req.params.id, author, {});
