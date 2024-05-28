@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const compression = require('compression');
 const helmet = require('helmet');
+const ratelimit = require('express-rate-limit');
 
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
@@ -30,6 +31,12 @@ app.use(
     directives: {
       'script-src': ["'self'", 'code.jquery.com', 'cdn.jsdelivr.net'],
     },
+  })
+);
+app.use(
+  ratelimit({
+    window: 1 * 60 * 1000, // 1 min
+    max: 20,
   })
 );
 
