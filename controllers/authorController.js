@@ -2,6 +2,7 @@ const Author = require('../models/author');
 const Book = require('../models/book');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
+const debug = require('debug')('author:');
 
 exports.author_list = asyncHandler(async (req, res, next) => {
   const authors = await Author.find({}).sort({ family_name: 1 }).exec();
@@ -17,6 +18,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
 
   if (author === null) {
     const err = new Error('Author not found');
+    debug(`detail not found: ${req.params.id}`);
     err.status = 404;
     return next(err);
   }

@@ -3,6 +3,7 @@ const Author = require('../models/author');
 const BookInstance = require('../models/bookinstance');
 const Genre = require('../models/genre');
 const { body, validationResult } = require('express-validator');
+const debug = require('debug')('book:');
 
 const asyncHandler = require('express-async-handler');
 
@@ -42,6 +43,7 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
   ]);
   if (book === null) {
     const err = new Error('Book not found!');
+    debug(`detail not found: ${req.params.id}`);
     err.status = 404;
     return next(err);
   }
@@ -153,6 +155,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
   if (book === null) {
     const err = new Error('Book not found');
     err.status = 404;
+    debug(`detail not found: ${req.params.id}`);
     return next(err);
   }
 

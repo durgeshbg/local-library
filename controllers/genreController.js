@@ -2,6 +2,7 @@ const Genre = require('../models/genre');
 const Book = require('../models/book');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
+const debug = require('debug')('genre:');
 
 exports.genre_list = asyncHandler(async (req, res, next) => {
   const genres = await Genre.find({}).sort({ name: 1 }).exec();
@@ -16,6 +17,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
 
   if (genre === null) {
     const err = new Error('Genre not found');
+    debug(`detail not found: ${req.params.id}`);
     err.status(404);
     return next(err);
   }

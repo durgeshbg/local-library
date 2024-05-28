@@ -2,6 +2,7 @@ const BookInstance = require('../models/bookinstance');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 const Book = require('../models/book');
+const debug = require('debug')('bookinstance:');
 
 exports.bookinstance_list = asyncHandler(async (req, res, next) => {
   const book_instances = await BookInstance.find().populate('book').exec();
@@ -14,6 +15,7 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
 
   if (bookInstance === null) {
     const err = new Error('Book copy not found');
+    debug(`detail not found: ${req.params.id}`);
     err.status = 404;
     return next(err);
   }
